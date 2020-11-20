@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .modal {
+        width: 300px;
+        padding: 50px;
+        background-color: rgb(93, 165, 194);
+        border-radius: 30px;
+        margin: 10px;
+        float: left;
+      }
+      input {
+        height: 20px;
+        margin: 12px 0 12px 12px;
+      }
+      body {
+        padding: 0 200px;
+        background-color: #ccc;
+      }
+      h3 {
+        text-align: center;
+      }
+      .title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #ccc;
+        padding: 0 1em;
+      }
+      .title h4 {
+        line-height: 2;
+        margin: 0;
+      }
+      .container {
+        border: 1px solid #ccc;
+        padding: 0 1em;
+      }
+      .btn {
+        /* 鼠标改成手的形状 */
+        cursor: pointer;
+      }
+      .right {
+        float: right;
+        width: 300px;
+        padding: 80px;
+        background-color: #fff;
+        border: 4px solid blueviolet;
+        border-radius: 30px;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <modal @fclick="ffn"> </modal>
+      <div class="right">
+        <h3>{{title}}</h3>
+        <p>{{one}}</p>
+        <p>{{two}}</p>
+        <p>{{three}}</p>
+        <p>{{four}}</p>
+      </div>
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+      Vue.component('modal', {
+        template: `
+          <div class="modal">
+            <div className="title">
+            </div>
+            <div className="content">
+              诗  &nbsp;&nbsp;名<input type="text" v-model='list.shiM'><br/>
+              第一句<input type="text" v-model='list.shiO'><br/>
+              第二句<input type="text" v-model='list.shiT'><br/>
+              第三句<input type="text" v-model='list.shiS'><br/>
+              第四句<input type="text" v-model='list.shiF' @keyup.enter='sure'><br/>
+            </div>
+            <div className="bottom">
+              <button @click='then'>重写</button>
+            </div>
+          </div>
+        `,
+        data() {
+          return {
+            list: {
+              shiM: '',
+              shiO: '',
+              shiT: '',
+              shiS: '',
+              shiF: '',
+            },
+          };
+        },
+        props: ['title'],
+        methods: {
+          sure() {
+            if (
+              !this.list.shiM |
+              !this.list.shiO |
+              !this.list.shiT |
+              !this.list.shiS |
+              !this.list.shiF
+            )
+              return;
+            this.$emit('fclick', this.list);
+            this.list = {};
+          },
+          then() {
+            this.list = {};
+          },
+        },
+      });
+
+      const vm = new Vue({
+        el: '#app',
+        data: {
+          title: '',
+          one: '',
+          two: '',
+          three: '',
+          four: '',
+        },
+        methods: {
+          ffn(n) {
+            console.log(n);
+            this.title = n.shiM;
+            this.one = n.shiO;
+            this.two = n.shiT;
+            this.three = n.shiS;
+            this.four = n.shiF;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
